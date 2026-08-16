@@ -2,54 +2,54 @@ import numpy as np
 
 
 # ============================================================
-# INFORMATIONS SUR LES INDICATEURS
+# FEATURE INFORMATION
 # ============================================================
 
 FEATURES = [
     {
-        "name": "Globules rouges (GR)",
+        "name": "Red Blood Cells (RBC)",
         "unit": "millions/µL",
-        "description": "Cellules qui transportent principalement l'oxygène dans le sang.",
-        "healthy": "Environ 4,0 à 6,0 millions/µL"
+        "description": "Cells that primarily transport oxygen through the bloodstream.",
+        "healthy": "Approximately 4.0 to 6.0 million/µL"
     },
     {
-        "name": "Globules blancs (GB)",
-        "unit": "milliers/µL",
-        "description": "Cellules du système immunitaire qui participent à la défense de l'organisme.",
-        "healthy": "Environ 4 à 10 milliers/µL"
+        "name": "White Blood Cells (WBC)",
+        "unit": "thousand/µL",
+        "description": "Immune system cells that help defend the body.",
+        "healthy": "Approximately 4 to 10 thousand/µL"
     },
     {
-        "name": "Plaquettes (PLT)",
-        "unit": "milliers/µL",
-        "description": "Cellules qui jouent un rôle essentiel dans la coagulation du sang.",
-        "healthy": "Environ 150 à 400 milliers/µL"
+        "name": "Platelets (PLT)",
+        "unit": "thousand/µL",
+        "description": "Cells that play an essential role in blood clotting.",
+        "healthy": "Approximately 150 to 400 thousand/µL"
     },
     {
-        "name": "Glycémie (GLY)",
+        "name": "Blood Glucose (GLY)",
         "unit": "g/L",
-        "description": "Concentration de glucose dans le sang.",
-        "healthy": "Environ 0,70 à 1,10 g/L à jeun"
+        "description": "Concentration of glucose in the blood.",
+        "healthy": "Approximately 0.70 to 1.10 g/L when fasting"
     },
     {
         "name": "CRP",
         "unit": "mg/L",
-        "description": "Protéine dont le taux augmente notamment lors d'une inflammation.",
-        "healthy": "Généralement inférieure à 5 mg/L"
+        "description": "A protein whose level typically rises during inflammation.",
+        "healthy": "Generally below 5 mg/L"
     }
 ]
 
 
 LABELS = [
-    "Sain",
-    "Diabète",
+    "Healthy",
+    "Diabetes",
     "Infection",
-    "Anémie",
-    "Leucémie"
+    "Anemia",
+    "Leukemia"
 ]
 
 
 # ============================================================
-# GÉNÉRATION DU DATASET
+# DATASET GENERATION
 # ============================================================
 
 def generate_dataset(samples_per_class=50, seed=42):
@@ -60,14 +60,14 @@ def generate_dataset(samples_per_class=50, seed=42):
     y = []
 
     # --------------------------------------------------------
-    # Sain
+    # Healthy
     # --------------------------------------------------------
 
     for _ in range(samples_per_class):
 
         values = [
-            rng.normal(5.0, 0.25),      # GR
-            rng.normal(7.0, 0.8),       # GB
+            rng.normal(5.0, 0.25),      # RBC
+            rng.normal(7.0, 0.8),       # WBC
             rng.normal(250, 25),        # PLT
             rng.normal(0.90, 0.08),     # GLY
             rng.normal(2.0, 0.8)        # CRP
@@ -77,7 +77,7 @@ def generate_dataset(samples_per_class=50, seed=42):
         y.append(0)
 
     # --------------------------------------------------------
-    # Diabète
+    # Diabetes
     # --------------------------------------------------------
 
     for _ in range(samples_per_class):
@@ -86,7 +86,7 @@ def generate_dataset(samples_per_class=50, seed=42):
             rng.normal(5.0, 0.25),
             rng.normal(7.0, 0.8),
             rng.normal(250, 25),
-            rng.normal(2.5, 0.30),     # glycémie élevée
+            rng.normal(2.5, 0.30),     # high blood glucose
             rng.normal(2.0, 0.8)
         ]
 
@@ -101,23 +101,23 @@ def generate_dataset(samples_per_class=50, seed=42):
 
         values = [
             rng.normal(5.0, 0.25),
-            rng.normal(18.0, 2.0),      # GB élevés
+            rng.normal(18.0, 2.0),      # high WBC count
             rng.normal(250, 25),
             rng.normal(0.90, 0.08),
-            rng.normal(100, 15)         # CRP élevée
+            rng.normal(100, 15)         # high CRP
         ]
 
         X.append(values)
         y.append(2)
 
     # --------------------------------------------------------
-    # Anémie
+    # Anemia
     # --------------------------------------------------------
 
     for _ in range(samples_per_class):
 
         values = [
-            rng.normal(3.5, 0.20),      # GR faibles
+            rng.normal(3.5, 0.20),      # low RBC count
             rng.normal(7.0, 0.8),
             rng.normal(220, 25),
             rng.normal(0.90, 0.08),
@@ -128,17 +128,17 @@ def generate_dataset(samples_per_class=50, seed=42):
         y.append(3)
 
     # --------------------------------------------------------
-    # Leucémie
+    # Leukemia
     # --------------------------------------------------------
 
     for _ in range(samples_per_class):
 
         values = [
-            rng.normal(3.5, 0.25),      # GR faibles
-            rng.normal(30.0, 3.0),      # GB très élevés
-            rng.normal(100, 15),        # PLT faibles
+            rng.normal(3.5, 0.25),      # low RBC count
+            rng.normal(30.0, 3.0),      # very high WBC count
+            rng.normal(100, 15),        # low platelet count
             rng.normal(0.90, 0.08),
-            rng.normal(80, 15)           # CRP élevée
+            rng.normal(80, 15)           # high CRP
         ]
 
         X.append(values)
@@ -147,14 +147,14 @@ def generate_dataset(samples_per_class=50, seed=42):
     X = np.array(X, dtype=float)
     y = np.array(y, dtype=int)
 
-    # Mélange des exemples
+    # Shuffle samples
     indices = rng.permutation(len(X))
 
     X = X[indices]
     y = y[indices]
 
     # --------------------------------------------------------
-    # Séparation entraînement / test
+    # Train/test split
     # --------------------------------------------------------
 
     split = int(len(X) * 0.8)
@@ -166,7 +166,7 @@ def generate_dataset(samples_per_class=50, seed=42):
     y_test = y[split:]
 
     # --------------------------------------------------------
-    # Normalisation
+    # Normalization
     # --------------------------------------------------------
 
     mean = X_train.mean(axis=0)
