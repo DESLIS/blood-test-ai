@@ -19,14 +19,14 @@ class NeuralNetwork:
         self.reset()
 
     # ========================================================
-    # INITIALISATION
+    # INITIALIZATION
     # ========================================================
 
     def reset(self):
 
         rng = np.random.default_rng()
 
-        # Xavier / He simplifié
+        # Simplified Xavier/He initialization
         self.W1 = (
             rng.normal(
                 0,
@@ -76,8 +76,8 @@ class NeuralNetwork:
 
     def softmax(self, x):
 
-        # On soustrait le maximum pour éviter
-        # des problèmes numériques avec exp()
+        # Subtract the maximum to avoid numerical issues
+        # with exp()
 
         exp_values = np.exp(
             x - np.max(x, axis=1, keepdims=True)
@@ -107,10 +107,10 @@ class NeuralNetwork:
         # Layer 3
         self.z3 = self.a2 @ self.W3 + self.b3
 
-        # Les z3 sont les LOGITS
+        # z3 contains the LOGITS
         self.logits = self.z3
 
-        # Transformation en probabilités
+        # Convert to probabilities
         self.probabilities = self.softmax(self.logits)
 
         return self.probabilities
@@ -130,7 +130,7 @@ class NeuralNetwork:
             ]
         )
 
-        # Petite valeur pour éviter log(0)
+        # Small value to avoid log(0)
         correct_probabilities = np.clip(
             correct_probabilities,
             1e-12,
@@ -152,7 +152,7 @@ class NeuralNetwork:
         number_of_samples = len(y)
 
         # ----------------------------------------------------
-        # Gradient des logits
+        # Logit gradient
         # ----------------------------------------------------
 
         dz3 = self.probabilities.copy()
@@ -165,14 +165,14 @@ class NeuralNetwork:
         dz3 /= number_of_samples
 
         # ----------------------------------------------------
-        # W3 et b3
+        # W3 and b3
         # ----------------------------------------------------
 
         dW3 = self.a2.T @ dz3
         db3 = np.sum(dz3, axis=0)
 
         # ----------------------------------------------------
-        # Retour vers Layer 2
+        # Back to Layer 2
         # ----------------------------------------------------
 
         da2 = dz3 @ self.W3.T
@@ -186,7 +186,7 @@ class NeuralNetwork:
         db2 = np.sum(dz2, axis=0)
 
         # ----------------------------------------------------
-        # Retour vers Layer 1
+        # Back to Layer 1
         # ----------------------------------------------------
 
         da1 = dz2 @ self.W2.T
@@ -200,7 +200,7 @@ class NeuralNetwork:
         db1 = np.sum(dz1, axis=0)
 
         # ----------------------------------------------------
-        # Mise à jour des paramètres
+        # Update parameters
         # ----------------------------------------------------
 
         self.W3 -= self.learning_rate * dW3
@@ -213,7 +213,7 @@ class NeuralNetwork:
         self.b1 -= self.learning_rate * db1
 
     # ========================================================
-    # ENTRAÎNEMENT
+    # TRAINING
     # ========================================================
 
     def train_one_epoch(self, X, y):
@@ -232,12 +232,12 @@ class NeuralNetwork:
         return self.loss
 
     # ========================================================
-    # PRÉDICTION
+    # PREDICTION
     # ========================================================
 
     def predict(self, X):
 
-        # Accepte un seul exemple
+        # Accept a single sample
         if X.ndim == 1:
             X = X.reshape(1, -1)
 

@@ -83,7 +83,7 @@ class BloodAnalysisUI:
         self.root = root
 
         self.root.title(
-            "Analyse sanguine - Réseau de neurones"
+            "Blood Analysis - Neural Network"
         )
 
         self.root.geometry(
@@ -109,13 +109,13 @@ class BloodAnalysisUI:
         ) = generate_dataset()
 
         # ----------------------------------------------------
-        # Modèle
+        # Model
         # ----------------------------------------------------
 
         self.model = NeuralNetwork()
 
         # ----------------------------------------------------
-        # Variables Tkinter
+        # Tkinter variables
         # ----------------------------------------------------
 
         self.input_vars = [
@@ -124,23 +124,23 @@ class BloodAnalysisUI:
         ]
 
         self.result_var = tk.StringVar(
-            value="Aucune analyse effectuée"
+            value="No analysis performed"
         )
 
         self.epoch_var = tk.StringVar(
-            value="Epoch : 0"
+            value="Epoch: 0"
         )
 
         self.loss_var = tk.StringVar(
-            value="Loss : -"
+            value="Loss: -"
         )
 
         self.train_accuracy_var = tk.StringVar(
-            value="Entraînement : 0 / 200"
+            value="Training: 0 / 200"
         )
 
         self.test_accuracy_var = tk.StringVar(
-            value="Test : 0 / 50"
+            value="Test: 0 / 50"
         )
 
         # ----------------------------------------------------
@@ -187,14 +187,14 @@ class BloodAnalysisUI:
         self.refresh_matrices()
 
     # ========================================================
-    # ANALYSE
+    # ANALYSIS
     # ========================================================
 
     def create_input_section(self, parent):
 
         frame = ttk.LabelFrame(
             parent,
-            text="Analyse sanguine",
+            text="Blood Analysis",
             padding=10
         )
 
@@ -236,9 +236,9 @@ class BloodAnalysisUI:
                 info_label,
                 (
                     f"{feature['description']}\n"
-                    f"Valeur indicative saine : "
+                    f"Typical healthy value: "
                     f"{feature['healthy']}\n"
-                    f"Unité : {feature['unit']}"
+                    f"Unit: {feature['unit']}"
                 )
             )
 
@@ -264,7 +264,7 @@ class BloodAnalysisUI:
 
         ttk.Button(
             frame,
-            text="Analyser",
+            text="Analyze",
             command=self.analyser
         ).grid(
             row=len(FEATURES),
@@ -381,7 +381,7 @@ class BloodAnalysisUI:
 
         frame = ttk.LabelFrame(
             parent,
-            text="Paramètres du réseau",
+            text="Network Parameters",
             padding=10
         )
 
@@ -502,7 +502,7 @@ class BloodAnalysisUI:
         self.refresh_matrices()
 
     # ========================================================
-    # AFFICHAGE TRAINING
+    # TRAINING DISPLAY
     # ========================================================
 
     def update_training_display(self):
@@ -522,20 +522,20 @@ class BloodAnalysisUI:
         )
 
         self.epoch_var.set(
-            f"Epoch : {self.model.epoch}"
+            f"Epoch: {self.model.epoch}"
         )
 
         self.loss_var.set(
-            f"Loss : {self.model.loss:.4f}"
+            f"Loss: {self.model.loss:.4f}"
         )
 
         self.train_accuracy_var.set(
-            f"Entraînement : "
+            f"Training: "
             f"{train_correct} / {train_total}"
         )
 
         self.test_accuracy_var.set(
-            f"Test : "
+            f"Test: "
             f"{test_correct} / {test_total}"
         )
 
@@ -548,7 +548,7 @@ class BloodAnalysisUI:
         self.model.reset()
 
         self.result_var.set(
-            "Modèle réinitialisé"
+            "Model reset"
         )
 
         self.update_training_display()
@@ -593,7 +593,7 @@ class BloodAnalysisUI:
         )
 
     # ========================================================
-    # PRÉDICTION
+    # PREDICTION
     # ========================================================
 
     def analyser(self):
@@ -608,13 +608,12 @@ class BloodAnalysisUI:
         except ValueError:
 
             self.result_var.set(
-                "Veuillez saisir des nombres valides."
+                "Please enter valid numbers."
             )
 
             return
 
-        # Normalisation exactement comme
-        # celle utilisée pendant l'entraînement
+        # Normalize exactly as done during training
 
         normalized = normalize_input(
             values,
@@ -633,7 +632,7 @@ class BloodAnalysisUI:
         )
 
         result = (
-            f"Résultat : {LABELS[best_index]}\n\n"
+            f"Result: {LABELS[best_index]}\n\n"
         )
 
         for i, label in enumerate(LABELS):
@@ -649,7 +648,7 @@ class BloodAnalysisUI:
 
 
 # ============================================================
-# LANCEMENT
+# LAUNCH
 # ============================================================
 
 def launch_ui():
